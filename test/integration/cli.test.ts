@@ -69,6 +69,37 @@ describe('CLI integration', () => {
     expect(checkBeforeSync.code).toBe(4);
   });
 
+  it('sync --dry-run accepts a symlinked source root', async () => {
+    const realSourcePath = join(project, 'shared', 'skills');
+    const sourcePath = join(project, '.agents', 'skills');
+    await mkdir(join(realSourcePath, 'alpha'), { recursive: true });
+    await writeFile(join(realSourcePath, 'alpha', 'SKILL.md'), '# alpha\n');
+    await mkdir(join(project, '.agents'), { recursive: true });
+    await symlink(realSourcePath, sourcePath, 'dir');
+    await writeFile(
+      join(project, '.agents', 'skills-sync.json'),
+      `${JSON.stringify(
+        {
+          schemaVersion: 1,
+          source: '.agents/skills',
+          target: '.claude/skills',
+          skills: ['alpha'],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const result = await run(['sync', '--dry-run', `--project=${project}`]);
+
+    expect(result.code).toBe(0);
+    expect(result.stdout).toContain('create: alpha');
+    expect(result.stdout).not.toContain('Source directory is missing');
+    await expect(lstat(join(project, '.claude', 'skills'))).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
+  });
+
   it('add and remove update the config', async () => {
     await makeSkill('alpha');
     await makeSkill('beta');

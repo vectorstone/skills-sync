@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-08-01
+
+### Fixed
+
+- Follow a directory symlink when checking the configured source root, so global shared skill directories are recognized correctly.
+
 ## [0.1.0] - 2026-08-01
 
 The first public release.
@@ -28,5 +34,6 @@ The first public release.
 
 - Deviation from the legacy shell script: scope is now explicit (no default), the manifest is JSON, and `check` is strictly read-only.
 
-[unreleased]: https://github.com/vectorstone/skills-sync/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/vectorstone/skills-sync/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/vectorstone/skills-sync/releases/tag/v0.1.1
 [0.1.0]: https://github.com/vectorstone/skills-sync/releases/tag/v0.1.0

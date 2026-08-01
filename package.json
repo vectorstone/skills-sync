@@ -1,6 +1,6 @@
 {
   "name": "agent-skills-sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Safely expose selected Agent Skills from .agents/skills to Claude Code via managed symlinks.",
   "type": "module",
   "bin": {

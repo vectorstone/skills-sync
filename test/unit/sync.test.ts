@@ -57,6 +57,38 @@ describe('sync planning and execution', () => {
     );
   });
 
+  it('accepts a directory symlink as the source root', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'skills-sync-'));
+    const realSourcePath = join(root, 'shared', 'skills');
+    const sourcePath = join(root, '.agents', 'skills');
+    const targetPath = join(root, '.claude', 'skills');
+    await mkdir(join(realSourcePath, 'alpha'), { recursive: true });
+    await writeFile(join(realSourcePath, 'alpha', 'SKILL.md'), '# alpha\n');
+    await mkdir(join(root, '.agents'), { recursive: true });
+    await symlink(realSourcePath, sourcePath, 'dir');
+
+    const plan = await planSync({
+      paths: {
+        scope: { kind: 'project', root },
+        configPath: join(root, '.agents', 'skills-sync.json'),
+        sourcePath,
+        targetPath,
+        rawSource: '.agents/skills',
+        rawTarget: '.claude/skills',
+      },
+      config: {
+        schemaVersion: 1,
+        source: '.agents/skills',
+        target: '.claude/skills',
+        skills: ['alpha'],
+      },
+    });
+
+    expect(plan.sourceRootExists).toBe(true);
+    expect(plan.items.map(({ status }) => status)).toEqual(['create']);
+    await expect(lstat(targetPath)).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
   it('accepts equivalent relative links and force replaces only symlinks', async () => {
     const { paths, config } = await fixture(['alpha']);
     await mkdir(paths.targetPath, { recursive: true });

@@ -1,4 +1,4 @@
-import { lstat } from 'node:fs/promises';
+import { lstat, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ConfigDocument, PlanItem, ResolvedPaths } from '../domain/types.js';
 import { mapLimit } from '../fs/map-limit.js';
@@ -44,7 +44,7 @@ export async function planSync(
   const options = input.options ?? {};
   const names = [...(input.config?.skills ?? [])].sort(compareCodePoint);
   const sourceRootExists = await isDirectory(paths.sourcePath);
-  const targetRootExists = await isDirectory(paths.targetPath);
+  const targetRootExists = await isDirectoryEntry(paths.targetPath);
   if (!sourceRootExists) {
     return {
       sourceRootExists: false,
@@ -133,6 +133,15 @@ export async function planSync(
 export const planSyncActions = planSync;
 
 async function isDirectory(path: string): Promise<boolean> {
+  try {
+    return (await stat(path)).isDirectory();
+  } catch (error) {
+    if (isMissing(error)) return false;
+    throw error;
+  }
+}
+
+async function isDirectoryEntry(path: string): Promise<boolean> {
   try {
     return (await lstat(path)).isDirectory();
   } catch (error) {
