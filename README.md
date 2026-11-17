@@ -2,7 +2,7 @@
 
 [简体中文](README.zh-CN.md)
 
-`agent-skills-sync` is a filesystem-only Node.js CLI for exposing a selected set of agent skills through managed symlinks.
+`sksync` is a filesystem-only Node.js CLI for exposing a selected set of agent skills through managed symlinks.
 
 It treats `.agents/skills` as the canonical source and creates links in `.claude/skills`. Linking keeps one source of truth and avoids copying skill contents into a second tree.
 
@@ -30,7 +30,7 @@ It does not copy skill contents, synchronize in both directions, or run the obso
 When the package is published:
 
 ```sh
-npm install --global agent-skills-sync
+npm install --global sksync
 ```
 
 For a checkout, build it first and invoke the generated binary:
@@ -46,10 +46,10 @@ node dist/cli.js --help
 From a project containing `.agents/skills/<skill-name>/SKILL.md` directories:
 
 ```sh
-agent-skills-sync init
-agent-skills-sync add review
-agent-skills-sync sync
-agent-skills-sync check
+sksync init
+sksync add review
+sksync sync
+sksync check
 ```
 
 `init` creates the project configuration and the standard source/target directories. `add` selects an existing source skill. `sync` creates or updates managed symlinks after planning and confirmation when changes are needed. `check` is read-only.
@@ -57,22 +57,22 @@ agent-skills-sync check
 Inspect a plan without changing the filesystem:
 
 ```sh
-agent-skills-sync sync --dry-run
-agent-skills-sync list --available
+sksync sync --dry-run
+sksync list --available
 ```
 
 Use global configuration explicitly:
 
 ```sh
-agent-skills-sync --global init
-agent-skills-sync --global add review
-agent-skills-sync --global sync
+sksync --global init
+sksync --global add review
+sksync --global sync
 ```
 
 Use an alternate project root with an absolute path:
 
 ```sh
-agent-skills-sync --project=/absolute/path/to/project list
+sksync --project=/absolute/path/to/project list
 ```
 
 ## Configuration

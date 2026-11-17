@@ -1,10 +1,10 @@
 {
-  "name": "agent-skills-sync",
-  "version": "0.1.1",
+  "name": "sksync",
+  "version": "0.2.0",
   "description": "Safely expose selected Agent Skills from .agents/skills to Claude Code via managed symlinks.",
   "type": "module",
   "bin": {
-    "agent-skills-sync": "dist/cli.js"
+    "sksync": "dist/cli.js"
   },
   "files": [
     "dist/",

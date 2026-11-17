@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-17
+
+### Changed
+
+- Renamed the package and CLI from `agent-skills-sync` to `sksync`.
+
 ## [0.1.1] - 2026-08-01
 
 ### Fixed
@@ -34,6 +40,7 @@ The first public release.
 
 - Deviation from the legacy shell script: scope is now explicit (no default), the manifest is JSON, and `check` is strictly read-only.
 
-[unreleased]: https://github.com/vectorstone/skills-sync/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/vectorstone/skills-sync/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/vectorstone/skills-sync/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/vectorstone/skills-sync/releases/tag/v0.1.1
 [0.1.0]: https://github.com/vectorstone/skills-sync/releases/tag/v0.1.0

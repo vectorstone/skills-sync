@@ -4,7 +4,7 @@ import { atomicWriteFile } from '../fs/atomic-write.js';
 import { hashBytes, hashFile } from '../fs/identity.js';
 import { CliError, EXIT_CODES } from '../domain/errors.js';
 
-export const MANAGED_GITIGNORE_COMMENT = '# agent-skills-sync managed links';
+export const MANAGED_GITIGNORE_COMMENT = '# sksync managed links';
 export const MANAGED_GITIGNORE_PATTERN = '/.claude/skills/';
 
 export type GitignorePlan =

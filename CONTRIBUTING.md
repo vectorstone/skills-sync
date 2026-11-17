@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in improving `agent-skills-sync`! This is a small, focused tool, so the contribution surface is intentionally narrow.
+Thanks for your interest in improving `sksync`! This is a small, focused tool, so the contribution surface is intentionally narrow.
 
 ## Prerequisites
 

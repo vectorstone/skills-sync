@@ -58,7 +58,7 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
   const program = new Command();
 
   program
-    .name('agent-skills-sync')
+    .name('sksync')
     .description(
       'Safely expose selected Agent Skills from .agents/skills to Claude Code via managed symlinks.',
     )
@@ -136,7 +136,7 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     });
 
   try {
-    await program.parseAsync(['node', 'agent-skills-sync', ...normalized.argv]);
+    await program.parseAsync(['node', 'sksync', ...normalized.argv]);
   } catch (error) {
     const cliError = error instanceof CliError ? error : asCliError(error);
     result = errorResult(normalized, 'error', cliError.message, cliError.exitCode);

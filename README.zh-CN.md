@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-`agent-skills-sync` 是一个仅操作文件系统的 Node.js CLI，用受管理的符号链接向 Claude Code 暴露一组经过选择的 Agent Skills。
+`sksync` 是一个仅操作文件系统的 Node.js CLI，用受管理的符号链接向 Claude Code 暴露一组经过选择的 Agent Skills。
 
 它将 `.agents/skills` 视为唯一规范来源，并在 `.claude/skills` 中创建链接。这样既能避免复制技能内容，也能避免两个目录发生漂移。
 
@@ -30,7 +30,7 @@
 软件包发布后：
 
 ```sh
-npm install --global agent-skills-sync
+npm install --global sksync
 ```
 
 在源码检出目录中，先构建再调用生成的命令：
@@ -46,10 +46,10 @@ node dist/cli.js --help
 在包含 `.agents/skills/<技能名>/SKILL.md` 的项目中执行：
 
 ```sh
-agent-skills-sync init
-agent-skills-sync add review
-agent-skills-sync sync
-agent-skills-sync check
+sksync init
+sksync add review
+sksync sync
+sksync check
 ```
 
 `init` 创建项目配置以及标准源目录和目标目录。`add` 选择已有的源技能。`sync` 先规划操作，并在需要变更时确认，然后创建或更新受管理符号链接。`check` 是只读命令。
@@ -57,22 +57,22 @@ agent-skills-sync check
 只查看计划，不修改文件系统：
 
 ```sh
-agent-skills-sync sync --dry-run
-agent-skills-sync list --available
+sksync sync --dry-run
+sksync list --available
 ```
 
 显式使用全局配置：
 
 ```sh
-agent-skills-sync --global init
-agent-skills-sync --global add review
-agent-skills-sync --global sync
+sksync --global init
+sksync --global add review
+sksync --global sync
 ```
 
 通过绝对路径选择其他项目根目录：
 
 ```sh
-agent-skills-sync --project=/absolute/path/to/project list
+sksync --project=/absolute/path/to/project list
 ```
 
 ## 配置

@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-`agent-skills-sync` is early in its lifecycle (`0.x`). Only the latest published version receives security fixes.
+`sksync` is early in its lifecycle (`0.x`). Only the latest published version receives security fixes.
 
 ## Reporting a vulnerability
 
@@ -15,7 +15,7 @@ Please include: affected version, a minimal reproduction, and your assessment of
 
 ## Scope
 
-`agent-skills-sync` is a **local filesystem-only** CLI. It does not access the network, does not call any model APIs, collects no telemetry, and runs no install hooks. It manages symlinks between local skill directories. Security concerns in scope include:
+`sksync` is a **local filesystem-only** CLI. It does not access the network, does not call any model APIs, collects no telemetry, and runs no install hooks. It manages symlinks between local skill directories. Security concerns in scope include:
 
 - path traversal / escaping the selected scope
 - unsafe deletion or overwrite of files outside managed symlinks

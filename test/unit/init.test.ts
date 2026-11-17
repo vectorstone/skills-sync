@@ -105,7 +105,7 @@ describe('project gitignore', () => {
     expect(plan).toMatchObject({ status: 'create' });
     await applyProjectGitignore(plan);
     expect(await readFile(join(root, '.gitignore'), 'utf8')).toBe(
-      '# agent-skills-sync managed links\n/.claude/skills/\n',
+      '# sksync managed links\n/.claude/skills/\n',
     );
     await expect(planProjectGitignore(root)).resolves.toMatchObject({ status: 'kept' });
   });
