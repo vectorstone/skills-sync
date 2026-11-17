@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Renamed the package and CLI from `agent-skills-sync` to `sksync`.
+- Renamed the package and CLI from `agent-skills-sync` to `@vectorstone/sksync`; the command is `sksync`.
 
 ## [0.1.1] - 2026-08-01
 

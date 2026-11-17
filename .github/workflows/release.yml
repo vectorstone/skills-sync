@@ -35,7 +35,7 @@ jobs:
         id: check
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          if npm view "sksync@$VERSION" version >/dev/null 2>&1; then
+          if npm view "@vectorstone/sksync@$VERSION" version >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
             echo "Version $VERSION already published; skipping."
           else

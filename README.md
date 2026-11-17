@@ -30,7 +30,7 @@ It does not copy skill contents, synchronize in both directions, or run the obso
 When the package is published:
 
 ```sh
-npm install --global sksync
+npm install --global @vectorstone/sksync
 ```
 
 For a checkout, build it first and invoke the generated binary:

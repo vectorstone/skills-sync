@@ -30,7 +30,7 @@
 软件包发布后：
 
 ```sh
-npm install --global sksync
+npm install --global @vectorstone/sksync
 ```
 
 在源码检出目录中，先构建再调用生成的命令：
