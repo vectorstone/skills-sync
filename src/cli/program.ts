@@ -72,7 +72,7 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .option('--source <path>', 'override the configured source directory')
     .option('--target <path>', 'override the configured target directory')
     .action(async (opts: CommandOptions) => {
-      result = await handleList(normalized, opts);
+      result = await handleList(normalized, withConfig(normalized, opts));
     });
 
   program
@@ -83,7 +83,7 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .option('--source <path>', 'override the configured source directory')
     .option('--target <path>', 'override the configured target directory')
     .action(async (opts: CommandOptions) => {
-      result = await handleCheck(normalized, opts);
+      result = await handleCheck(normalized, withConfig(normalized, opts));
     });
 
   program
@@ -96,7 +96,7 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .option('--source <path>', 'override the configured source directory')
     .option('--target <path>', 'override the configured target directory')
     .action(async (opts: CommandOptions) => {
-      result = await handleSync(normalized, opts);
+      result = await handleSync(normalized, withConfig(normalized, opts));
     });
 
   program
@@ -104,7 +104,10 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .description('Add skill names to the config (does not create links).')
     .option('--config <path>', 'override the config file path')
     .action(async (skills: string[], opts: CommandOptions) => {
-      result = await handleAdd(normalized, { ...opts, names: skills });
+      result = await handleAdd(normalized, {
+        ...withConfig(normalized, opts),
+        names: skills,
+      });
     });
 
   program
@@ -112,7 +115,10 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .description('Remove skill names from the config (does not delete links).')
     .option('--config <path>', 'override the config file path')
     .action(async (skills: string[], opts: CommandOptions) => {
-      result = await handleRemove(normalized, { ...opts, names: skills });
+      result = await handleRemove(normalized, {
+        ...withConfig(normalized, opts),
+        names: skills,
+      });
     });
 
   program
@@ -128,11 +134,12 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
     .option('--empty', 'create an empty skills selection')
     .option('--from-legacy', 'import the legacy .agents/claude-skills.txt selection')
     .option('--legacy-config <path>', 'legacy manifest path (with --from-legacy)')
+    .option('--config <path>', 'write the config to this path instead of the default')
     .option('--source <path>', 'set the source directory in the new config')
     .option('--target <path>', 'set the target directory in the new config')
     .option('--force', 'replace an existing config')
     .action(async (opts: CommandOptions) => {
-      result = await handleInit(normalized, opts);
+      result = await handleInit(normalized, withConfig(normalized, opts));
     });
 
   try {
@@ -151,6 +158,15 @@ export async function runProgram(normalized: NormalizedArguments): Promise<numbe
 
 function accumulate(value: string, previous: string[]): string[] {
   return [...previous, value];
+}
+
+/**
+ * The argv normalizer removes --config before commander parses, so the value
+ * only exists on the globals. Fold it back in for every command.
+ */
+function withConfig(normalized: NormalizedArguments, opts: CommandOptions): CommandOptions {
+  const config = normalized.globals.config ?? opts.config;
+  return config === undefined ? opts : { ...opts, config };
 }
 
 async function handleList(
@@ -371,7 +387,7 @@ async function handleInit(
 ): Promise<CommandResult> {
   const scope = await requireScope(normalized);
   const configPath = opts.config
-    ? await assertPathWithinScope(scope.root, resolve(opts.config), 'Config path')
+    ? await assertPathWithinScope(scope.root, resolve(scope.root, opts.config), 'Config path')
     : resolve(scope.root, '.agents', 'skills-sync.json');
 
   const modes = [
@@ -466,7 +482,7 @@ async function loadPaths(
   opts: CommandOptions,
 ): Promise<{ paths: ResolvedPaths; configPath: string; doc: ConfigDocument }> {
   const configPath = opts.config
-    ? await assertPathWithinScope(scope.root, resolve(opts.config), 'Config path')
+    ? await assertPathWithinScope(scope.root, resolve(scope.root, opts.config), 'Config path')
     : resolve(scope.root, '.agents', 'skills-sync.json');
   let doc = await readConfigFile(configPath);
   if (opts.source !== undefined) doc = { ...doc, source: opts.source };

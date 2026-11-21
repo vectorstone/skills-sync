@@ -80,8 +80,19 @@ export function normalizeArguments(rawArgv: readonly string[]): NormalizedArgume
       else globals.yes = true;
       continue;
     }
-    if (argument === '--config' || argument.startsWith('--config=')) {
-      globals.config = readValue(argument, rawArgv, index, '--config');
+    if (argument === '--config') {
+      const next = rawArgv[index + 1];
+      if (next === undefined || next === '' || next.startsWith('-')) {
+        throw new CliError('--config requires a value.', EXIT_CODES.usage);
+      }
+      globals.config = next;
+      index += 1;
+      continue;
+    }
+    if (argument.startsWith('--config=')) {
+      const value = argument.slice('--config='.length);
+      if (value === '') throw new CliError('--config requires a value.', EXIT_CODES.usage);
+      globals.config = value;
       continue;
     }
     argv.push(argument);
@@ -114,20 +125,6 @@ function assertSingleScope(existing: ScopeOption | undefined, flag: string): und
     );
   }
   return undefined;
-}
-
-function readValue(
-  argument: string,
-  rawArgv: readonly string[],
-  index: number,
-  flag: string,
-): string {
-  if (argument === flag) {
-    const next = rawArgv[index + 1];
-    if (next === undefined) throw new CliError(`${flag} requires a value.`, EXIT_CODES.usage);
-    return next;
-  }
-  return argument.slice(`${flag}=`.length);
 }
 
 function cleanGlobals(globals: {
